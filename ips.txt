@@ -4,5 +4,5 @@
 2. Oranje 				156
 3. Penningmeester 		143
 4. Blauw 				125
-5. Wit					-
+5. Wit					175
 6. Extern				174	
