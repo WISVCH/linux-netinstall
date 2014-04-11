@@ -111,10 +111,31 @@ cat > /etc/security/pam_mount.conf.xml << "EOF"
 </pam_mount>
 EOF
 
-echo "session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022" >> /etc/pam.d/common-session 
+echo "session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022" >> /etc/pam.d/common-session
+echo "session    optional    pam_exec.so /bin/bash /etc/link_schijf.sh" >> /etc/pam.d/login
 
 sudo /usr/lib/lightdm/lightdm-set-defaults --hide-users false --allow-guest false --show-remote-login false --show-manual-login true
 #sudo service lightdm restart
 sudo apt-get remove lightdm -y
 sudo apt-get install gdm
 #sudo dpkg-reconfigure gdm -y
+
+### CH Schijf
+cat > /etc/link_schijf.sh << "EOF"
+	rm ~/Desktop/schijf
+	ln -s "/home/groups-$USER" ~/Desktop/schijf
+EOF
+chmod ugo+x /etc/link_schijf.sh
+cat > /etc/open_schijf.sh << "EOF"
+	nautilus "/home/groups-$USER"
+EOF
+chmod ugo+x /etc/open_schijf.sh
+
+cat > /usr/share/applications/schijf.desktop << "EOF"
+[Desktop Entry]
+Type=Application
+Terminal=true
+Name=Schijf
+Icon=system-file-manager
+Exec=/etc/open_schijf.sh
+EOF
