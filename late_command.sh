@@ -9,6 +9,9 @@ cp /root/.ssh/authorized_keys /home/administrator/.ssh/
 passwd -d administrator
 passwd -d root
 
+echo "%beheer ALL=(ALL) ALL" >> /etc/sudoers
+echo "%pccom ALL=(ALL) ALL" >> /etc/sudoers
+
 ### Store configuration
 cat > /etc/nsswitch.conf << "EOF"
 passwd:   files ldap
@@ -85,9 +88,8 @@ EOF
 
 echo "session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022" >> /etc/pam.d/common-session 
 
-#sudo /usr/lib/lightdm/lightdm-set-defaults --hide-users false --allow-guest false --show-remote-login false --show-manual-login true
+sudo /usr/lib/lightdm/lightdm-set-defaults --hide-users false --allow-guest false --show-remote-login false --show-manual-login true
 #sudo service lightdm restart
-sudo apt-get remove lightdm
-sudo dpkg-reconfigure gdm
-
-reboot
+sudo apt-get remove lightdm -y
+sudo apt-get install gdm
+#sudo dpkg-reconfigure gdm -y
