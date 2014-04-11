@@ -1,0 +1,8 @@
+172.17.4.x
+
+1. Groen 				122
+2. Oranje 				156
+3. Penningmeester 		143
+4. Blauw 				125
+5. Wit					-
+6. Extern				?	
