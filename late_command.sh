@@ -86,6 +86,31 @@ i3QSstfZ
 -----END CERTIFICATE-----
 EOF
 
+cat > /etc/security/pam_mount.conf.xml << "EOF"
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE pam_mount SYSTEM "pam_mount.conf.xml.dtd">
+<!-- See pam_mount.conf(5) for a description. -->
+
+<pam_mount>
+	<!-- debug should come before everything else, since this file is still processed in a single pass from top-to-bottom -->
+	<debug enable="0" />
+	<!-- Volume definitions -->
+	<volume user="*" fstype="cifs" server="ank" path="%(DOMAIN_USER)" mountpoint="~" options="sec=ntlm,nodev,nosuid" />
+	<volume user="*" fstype="cifs" server="ank" path="groepen" mountpoint="/home/groups-%(DOMAIN_USER)" options="sec=ntlm,nodev,nosuid" />
+	<!-- pam_mount parameters: General tunables -->
+	<!-- <luserconf name=".pam_mount.conf.xml" /> -->
+	<!-- Note that commenting out mntoptions will give you the defaults.
+	     You will need to explicitly initialize it with the empty string
+	     to reset the defaults to nothing. -->
+	<mntoptions allow="nosuid,nodev,loop,encryption,fsck,nonempty,allow_root,allow_other" />
+	<!-- <mntoptions deny="suid,dev" /><mntoptions allow="*" /><mntoptions deny="*" /> -->
+	<mntoptions require="nosuid,nodev" />
+	<logout wait="0" hup="0" term="0" kill="0" />
+	<!-- pam_mount parameters: Volume-related -->
+	<mkmountpoint enable="1" remove="true" />
+</pam_mount>
+EOF
+
 echo "session    required    pam_mkhomedir.so skel=/etc/skel/ umask=0022" >> /etc/pam.d/common-session 
 
 sudo /usr/lib/lightdm/lightdm-set-defaults --hide-users false --allow-guest false --show-remote-login false --show-manual-login true
