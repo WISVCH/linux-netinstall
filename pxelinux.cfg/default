@@ -1,0 +1,3 @@
+label k
+  kernel ubuntu-13.10-installer/amd64/linux      
+  append auto=true priority=critical vga=788 debian-installer/locale=en_US keyboard-configuration/layoutcode=us localechooser/translation/warn-light=true localechooser/translation/warn-severe=true interface=eth0 netcfg/no_default_route=true netcfg/get_nameservers= url=http://wisv.ch/image/preseed.cfg initrd=ubuntu-13.10-installer/amd64/initrd.gz
